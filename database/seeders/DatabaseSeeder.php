@@ -23,26 +23,26 @@ class DatabaseSeeder extends Seeder
         $admin->save();
 
         $user = new User();
-        $user->name = 'Regular User';
-        $user->email = 'user@user.com';
+        $user->name = 'User Testing';
+        $user->email = 'user1@test.com';
         $user->password = bcrypt('password');
         $user->role = 'user';
         $user->save();
 
         \App\Models\Ticket::create([
             'user_id' => $user->id,
-            'title' => 'My mouse is broken',
-            'description' => 'The scroll wheel on my mouse is no longer working.',
+            'title' => 'Laptop tidak bisa nyala',
+            'description' => 'Laptop kantor mati total setelah mati listrik.',
             'category' => 'Hardware',
-            'status' => 'open'
+            'status' => 'open',
         ]);
 
         \App\Models\Ticket::create([
             'user_id' => $user->id,
-            'title' => 'Cannot install Photoshop',
-            'description' => 'It says I need an admin password.',
+            'title' => 'Tidak bisa akses email',
+            'description' => 'Login email selalu gagal sejak pagi.',
             'category' => 'Software',
-            'status' => 'in_progress'
+            'status' => 'in_progress',
         ]);
 
         \App\Models\Ticket::create([
