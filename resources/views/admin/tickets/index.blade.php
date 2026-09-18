@@ -60,7 +60,7 @@
                         </thead>
                         
                         @forelse($tickets as $ticket)
-                        <tbody x-data="{ open: false }">
+                        <tbody x-data="{ openUpdate: false, openDetails: false }">
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{ $ticket->id }}
@@ -79,11 +79,28 @@
                                         {{ ucfirst(str_replace('_', ' ', $ticket->status)) }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <button @click="open = !open" class="text-indigo-600 dark:text-indigo-400 hover:underline">Update</button>
+                                <td class="px-6 py-4 space-x-2">
+                                    <button @click="openDetails = !openDetails; if(openDetails) openUpdate = false" class="text-blue-600 dark:text-blue-400 hover:underline">Details</button>
+                                    <button @click="openUpdate = !openUpdate; if(openUpdate) openDetails = false" class="text-indigo-600 dark:text-indigo-400 hover:underline">Update</button>
                                 </td>
                             </tr>
-                            <tr class="bg-gray-50 dark:bg-gray-700" x-show="open" style="display: none;">
+                            
+                            <!-- Details Row -->
+                            <tr class="bg-gray-50 dark:bg-gray-700" x-show="openDetails" style="display: none;">
+                                <td colspan="6" class="px-6 py-4">
+                                    <div class="mb-4">
+                                        <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Description</h4>
+                                        <p class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{{ $ticket->description }}</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Admin Remarks</h4>
+                                        <p class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{{ $ticket->admin_note ?: 'No remarks yet.' }}</p>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Update Row -->
+                            <tr class="bg-gray-50 dark:bg-gray-700" x-show="openUpdate" style="display: none;">
                                 <td colspan="6" class="px-6 py-4">
                                     <form method="POST" action="{{ route('admin.tickets.update', $ticket) }}">
                                         @csrf
