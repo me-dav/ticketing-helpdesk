@@ -15,11 +15,43 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $admin = new User();
+        $admin->name = 'Admin User';
+        $admin->email = 'admin@admin.com';
+        $admin->password = bcrypt('password');
+        $admin->role = 'admin';
+        $admin->save();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $user = new User();
+        $user->name = 'Regular User';
+        $user->email = 'user@user.com';
+        $user->password = bcrypt('password');
+        $user->role = 'user';
+        $user->save();
+
+        \App\Models\Ticket::create([
+            'user_id' => $user->id,
+            'title' => 'My mouse is broken',
+            'description' => 'The scroll wheel on my mouse is no longer working.',
+            'category' => 'Hardware',
+            'status' => 'open'
+        ]);
+
+        \App\Models\Ticket::create([
+            'user_id' => $user->id,
+            'title' => 'Cannot install Photoshop',
+            'description' => 'It says I need an admin password.',
+            'category' => 'Software',
+            'status' => 'in_progress'
+        ]);
+
+        \App\Models\Ticket::create([
+            'user_id' => $user->id,
+            'title' => 'Internet is very slow',
+            'description' => 'Pages take forever to load.',
+            'category' => 'Jaringan',
+            'status' => 'closed',
+            'admin_note' => 'Reset the router, it is fixed now.'
         ]);
     }
 }
