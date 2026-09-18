@@ -17,9 +17,27 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $user = User::factory()->create([
+            'name' => 'User Testing',
+            'email' => 'user1@test.com',
+            'password' => bcrypt('password'),
+            'role' => 'user',
+        ]);
+
+        \App\Models\Ticket::create([
+            'user_id' => $user->id,
+            'title' => 'Laptop tidak bisa nyala',
+            'description' => 'Laptop kantor mati total setelah mati listrik.',
+            'category' => 'Hardware',
+            'status' => 'open',
+        ]);
+
+        \App\Models\Ticket::create([
+            'user_id' => $user->id,
+            'title' => 'Tidak bisa akses email',
+            'description' => 'Login email selalu gagal sejak pagi.',
+            'category' => 'Software',
+            'status' => 'in_progress',
         ]);
     }
 }
