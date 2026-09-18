@@ -15,14 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $admin = new User();
+        $admin->name = 'Admin User';
+        $admin->email = 'admin@admin.com';
+        $admin->password = bcrypt('password');
+        $admin->role = 'admin';
+        $admin->save();
 
-        $user = User::factory()->create([
-            'name' => 'User Testing',
-            'email' => 'user1@test.com',
-            'password' => bcrypt('password'),
-            'role' => 'user',
-        ]);
+        $user = new User();
+        $user->name = 'User Testing';
+        $user->email = 'user1@test.com';
+        $user->password = bcrypt('password');
+        $user->role = 'user';
+        $user->save();
 
         \App\Models\Ticket::create([
             'user_id' => $user->id,
@@ -38,6 +43,15 @@ class DatabaseSeeder extends Seeder
             'description' => 'Login email selalu gagal sejak pagi.',
             'category' => 'Software',
             'status' => 'in_progress',
+        ]);
+
+        \App\Models\Ticket::create([
+            'user_id' => $user->id,
+            'title' => 'Internet is very slow',
+            'description' => 'Pages take forever to load.',
+            'category' => 'Jaringan',
+            'status' => 'closed',
+            'admin_note' => 'Reset the router, it is fixed now.'
         ]);
     }
 }
